@@ -49,7 +49,6 @@ RUN addgroup -g 1000 node \
     && rm "node-v$NODE_VERSION.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt
 
 ENV YARN_VERSION 1.13.0
-
 RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
   && for key in \
     6A010C5166006599AA17F08146C2130DFD2497F5 \
@@ -66,10 +65,14 @@ RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz \
+  && mkdir /client \
   && apk del .build-deps-yarn
 
-VOLUME /app
-WORKDIR /app
+VOLUME /client
+
+RUN cd /client && npm i
+
+WORKDIR /client
 
 EXPOSE 80
 CMD [ "node" ]

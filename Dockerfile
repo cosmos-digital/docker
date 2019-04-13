@@ -70,9 +70,7 @@ RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
 
 VOLUME /client
 
-RUN cd /client && npm i
-
 WORKDIR /client
 
-EXPOSE 80
+EXPOSE 4200
 CMD [ "node" ]
